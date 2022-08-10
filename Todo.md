@@ -1,5 +1,13 @@
 # TODO
-Backend
+Random
+- Create dockerimage
+- Test out Endpoints?
+- Create pipeline
+
+Database:
+- Data is relational SQL needed
+
+Backend (Spring boot or python with asycnio)
 - Add a job
 - Add an area for that job
 - Add a demand for job/(job+area)
@@ -20,7 +28,7 @@ Backend
 - Fetch strike
 - Add self to strike
 
-Front
+Front (React I want live updates)
 - Job list with clickable links + search
   - Leads to all areas for that job clickable
     - Leads to all jobs in the area
