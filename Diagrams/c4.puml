@@ -1,0 +1,28 @@
+@startuml "onlineUnion"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Container.puml
+
+LAYOUT_TOP_DOWN()
+'LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+
+Person_Ext(anonymous_user, "Unapproved User")
+Person(aggregated_user, "Accepted User")
+Person(administration_user, "Union User")
+
+System_Boundary(c1, "techtribes.js"){
+
+    Container(web_app, "Web Application Frontend", "React", "Create and join union groups with union supervision")
+    Container(backend, "Backend API", "Java Spring boot", "Create groups for different areas and jobs")
+    ContainerDb(rel_db, "Relational Database", "MySQL 5.5.x", "Store group, users, union members, posts and comments")
+}
+
+Rel(anonymous_user, web_app, "Uses", "HTTPS")
+Rel(aggregated_user, web_app, "Uses", "HTTPS")
+Rel(administration_user, web_app, "Uses", "HTTPS")
+
+Rel(web_app, backend, "Requests data and actions", "JSON")
+Rel(backend, rel_db, "Reads from and writes to", "SQL/JDBC, port 3306")
+
+@enduml

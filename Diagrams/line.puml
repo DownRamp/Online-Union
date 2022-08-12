@@ -1,0 +1,13 @@
+@startuml UnionDemands
+actor User 
+User -> Login: gogin
+alt success 
+    CreateJob <-- Login: success
+    CreateDemand <-- CreateJob: success 
+    VoteOnDemand <-- CreateDemand: success 
+    User <-- VoteOnDemand: success 
+else failure 
+    CreateGroups <-- Login: failure 
+    User <-- CreateGroups: failure
+end
+@enduml

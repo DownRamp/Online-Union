@@ -7,7 +7,7 @@ Random
 Database:
 - Data is relational SQL needed
 
-Backend (Spring boot or python with asycnio)
+Backend (Spring boot)
 - Add a job
 - Add an area for that job
 - Add a demand for job/(job+area)
