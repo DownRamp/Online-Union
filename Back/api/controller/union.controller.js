@@ -112,7 +112,7 @@ router.post('/demand', async function(req, res, next) {
 /* POST create a strike */
 router.post('/strike', async function(req, res, next) {
   try {
-      res.json(await union.create(req.body));
+      res.json(await union.createStrike(req.body));
   } catch (err) {
       console.error(`Error while posting strike `, err.message);
       next(err);
@@ -121,7 +121,7 @@ router.post('/strike', async function(req, res, next) {
 /* POST vote on a demand */
 router.post('/demand/vote', async function(req, res, next) {
   try {
-      res.json(await union.create(req.body));
+      res.json(await union.createVote(req.body));
   } catch (err) {
       console.error(`Error while posting vote `, err.message);
       next(err);
