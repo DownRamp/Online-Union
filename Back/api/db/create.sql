@@ -16,7 +16,7 @@ CREATE TABLE job (
 CREATE TABLE area (
     area_id serial PRIMARY KEY,
     location text not null,
-    FOREIGN KEY (job_id) REFERENCES job (id) ON DELETE CASCADE
+    job_id INTEGER REFERENCES job(id)
 );
 
 CREATE TABLE union_member (
@@ -24,13 +24,14 @@ CREATE TABLE union_member (
     status integer not null,
     name text not null,
     area_id integer,
-    FOREIGN KEY (job_id) REFERENCES job (id) ON DELETE CASCADE,
+    job_id INTEGER REFERENCES job(id)
 );
 
 CREATE TABLE complaint (
     id serial PRIMARY KEY,
+    dislike text not null,
     area_id integer,
-    FOREIGN KEY (job_id) REFERENCES job (id) ON DELETE CASCADE,
+    job_id INTEGER REFERENCES job(id)
 );
 
 CREATE TABLE strike (
@@ -38,7 +39,8 @@ CREATE TABLE strike (
     title VARCHAR ( 50 ) UNIQUE NOT NULL,
    	description text NOT NULL,
     area_id integer, 
-    FOREIGN KEY (job_id) REFERENCES job (id) ON DELETE CASCADE,
+    attendants_array integer[] not null, 
+    job_id INTEGER REFERENCES job(id)
 );
 
 CREATE TABLE demand (
@@ -47,5 +49,5 @@ CREATE TABLE demand (
    	title VARCHAR ( 50 ) UNIQUE NOT NULL,
    	reason text NOT NULL,
     votes integer NOT NULL,
-    FOREIGN KEY (job_id) REFERENCES job (id) ON DELETE CASCADE,
+    job_id INTEGER REFERENCES job(id)
 );

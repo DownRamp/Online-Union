@@ -33,9 +33,9 @@ router.get('/area/:id', async function(req, res, next) {
 });
 
 /* GET all votes for a job */
-router.get('/votes/:id', async function(req, res, next) {
+router.get('/votes/:id/:area?', async function(req, res, next) {
   try {
-    res.json(await union.getVotes(req.query.page, req.params.id));
+    res.json(await union.getVotes(req.query.page, req.params.id, req.params.area));
   } catch (err) {
     console.error(`Error while getting votes by id `, err.message);
     next(err);
@@ -43,9 +43,9 @@ router.get('/votes/:id', async function(req, res, next) {
 });
 
 /* GET all complains for job */
-router.get('/complaint/:id', async function(req, res, next) {
+router.get('/complaint/:id/:area?', async function(req, res, next) {
   try {
-    res.json(await union.getComplaintsWithId(req.query.page, req.params.id));
+    res.json(await union.getComplaintsWithId(req.query.page, req.params.id, req.params.area));
   } catch (err) {
     console.error(`Error while getting complaints `, err.message);
     next(err);
@@ -53,9 +53,9 @@ router.get('/complaint/:id', async function(req, res, next) {
 });
 
 /* GET all strikes for job */
-router.get('/strike/:id', async function(req, res, next) {
+router.get('/strike/:id/:area?', async function(req, res, next) {
   try {
-    res.json(await union.getStrikesWithId(req.query.page, req.params.id));
+    res.json(await union.getStrikesWithId(req.query.page, req.params.id, req.params.area));
   } catch (err) {
     console.error(`Error while getting strikes by id `, err.message);
     next(err);

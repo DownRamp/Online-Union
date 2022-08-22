@@ -12,16 +12,16 @@ async function getAreasOfJob(page, id) {
     return await UnionRepository.getAreasOfJob(page, id);
 }
 
-async function getVotes(page, id) {
-    return await UnionRepository.getVotes(page, id);
+async function getVotes(page, id, area) {
+    return await UnionRepository.getVotes(page, id, area);
 }
 
-async function getComplaintsWithId(page, id) {
-    return await UnionRepository.getComplaintsWithId(page, id);
+async function getComplaintsWithId(page, id, area) {
+    return await UnionRepository.getComplaintsWithId(page, id, area);
 }
 
-async function getStrikesWithId(page, id) {
-    return await UnionRepository.getStrikesWithId(page, id);
+async function getStrikesWithId(page, id, area) {
+    return await UnionRepository.getStrikesWithId(page, id, area);
 }
 
 async function getStrikes(page) {
