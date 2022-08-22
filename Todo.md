@@ -8,25 +8,12 @@ Database:
 - Data is relational SQL needed
 
 Backend (Spring boot)
-- Add a job
-- Add an area for that job
-- Add a demand for job/(job+area)
-- Vote on a demand for job/(job+area)
-- Get all jobs from an area
-- Get all jobs
-- Get all areas for a job
-- Get all votes for a job with id
+- on the day of the strike send out emails to all attendants
 ---
 - Sign in
 - Sign out
 - Create a user
 ---
-- Add complaints for job + area
-- Fetch complaints for job + area
----
-- Create a strike
-- Fetch strike
-- Add self to strike
 
 Front (React I want live updates)
 - Job list with clickable links + search

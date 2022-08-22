@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const { authJwt } = require("../middleware");
 const union = require('../service/union.service');
+
 const {
   jobDataValidate,
   areaDataValidate,
@@ -14,50 +16,44 @@ const {
 } = require("../validation/union.validation");
 
 /* GET all jobs */
-router.get('/', union.getAll);
+router.get('/', [authJwt.verifyToken], union.getAll);
 
-router.get('/strikes', union.getStrikes);
+router.get('/strikes', [authJwt.verifyToken], union.getStrikes);
 
 /* GET all jobs in area */
-router.get('/:id', union.getJobAreaWithId);
+router.get('/:id', [authJwt.verifyToken], union.getJobAreaWithId);
 
 /* GET all areas for a job */
-router.get('/area/:id', union.getAreasOfJob);
+router.get('/area/:id', [authJwt.verifyToken], union.getAreasOfJob);
 
 /* GET all votes for a job */
-router.get('/votes/:id/:area?', union.getVotes);
+router.get('/votes/:id/:area?', [authJwt.verifyToken], union.getVotes);
 
 /* GET all complains for job */
-router.get('/complaint/:id/:area?',union.getComplaintsWithId); 
+router.get('/complaint/:id/:area?', [authJwt.verifyToken], union.getComplaintsWithId); 
 
 /* GET all strikes for job */
-router.get('/strike/:id/:area?', union.getStrikesWithId);
+router.get('/strike/:id/:area?', [authJwt.verifyToken], union.getStrikesWithId);
 
 /* POST create a job */
-router.post('/job', jobDataValidate, union.createJob);
+router.post('/job', [authJwt.verifyToken, jobDataValidate], union.createJob);
 
   /* POST create a area */
-router.post('/area', areaDataValidate, union.createArea);
+router.post('/area',  [authJwt.verifyToken, areaDataValidate], union.createArea);
 
 /* POST create a complaint */
-router.post('/complaint', complaintDataValidate, union.createComplaint);
+router.post('/complaint',  [authJwt.verifyToken, complaintDataValidate], union.createComplaint);
 
 /* POST create a demand */
-router.post('/demand', demandDataValidate, union.createDemand);
+router.post('/demand',  [authJwt.verifyToken, demandDataValidate], union.createDemand);
 
 /* POST create a strike */
-router.post('/strike', strikeDataValidate, union.createStrike);
+router.post('/strike', [authJwt.verifyToken, strikeDataValidate], union.createStrike);
 
 /* POST vote on a demand */
-router.post('/demand/vote', voteDataValidate, union.createVote);
-
-/* POST create a union member */
-router.post('/signup', signupDataValidate, union.createMember);
-
-  /* POST login */
-router.post('/login', loginDataValidate, union.login);
+router.post('/demand/vote', [authJwt.verifyToken, voteDataValidate], union.createVote);
 
 /* POST join a strike */
-router.post('/strike/join', joinStrikeDataValidate, union.createStrikeJoin);
+router.post('/strike/join', [authJwt.verifyToken, joinStrikeDataValidate], union.createStrikeJoin);
 
 module.exports = router;

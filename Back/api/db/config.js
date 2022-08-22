@@ -8,6 +8,13 @@ const config = {
     password: env.PASSWORD || 'password',
     database: env.DB || 'UnionOrganizer',
   },
+  dialect:"postgres",
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
   listPerPage: env.LIST_PER_PAGE || 10,
 };
 
