@@ -1,160 +1,63 @@
 const express = require('express');
 const router = express.Router();
 const union = require('../service/union.service');
+const {
+  jobDataValidate,
+  areaDataValidate,
+  complaintDataValidate,
+  demandDataValidate,
+  strikeDataValidate,
+  voteDataValidate,
+  signupDataValidate,
+  loginDataValidate,
+  joinStrikeDataValidate
+} = require("../validation/union.validation");
 
 /* GET all jobs */
-router.get('/', async function(req, res, next) {
-    try {
-      res.json(await union.getAll(req.query.page));
-    } catch (err) {
-      console.error(`Error while getting jobs `, err.message);
-      next(err);
-    }
-  });
+router.get('/', union.getAll);
+
+router.get('/strikes', union.getStrikes);
 
 /* GET all jobs in area */
-router.get('/:id', async function(req, res, next) {
-  try {
-    res.json(await union.getJobAreaWithId(req.query.page, req.params.id));
-  } catch (err) {
-    console.error(`Error while getting jobs in area `, err.message);
-    next(err);
-  }
-});
+router.get('/:id', union.getJobAreaWithId);
 
 /* GET all areas for a job */
-router.get('/area/:id', async function(req, res, next) {
-  try {
-    res.json(await union.getAreasOfJob(req.query.page, req.params.id));
-  } catch (err) {
-    console.error(`Error while getting areas for a job `, err.message);
-    next(err);
-  }
-});
+router.get('/area/:id', union.getAreasOfJob);
 
 /* GET all votes for a job */
-router.get('/votes/:id/:area?', async function(req, res, next) {
-  try {
-    res.json(await union.getVotes(req.query.page, req.params.id, req.params.area));
-  } catch (err) {
-    console.error(`Error while getting votes by id `, err.message);
-    next(err);
-  }
-});
+router.get('/votes/:id/:area?', union.getVotes);
 
 /* GET all complains for job */
-router.get('/complaint/:id/:area?', async function(req, res, next) {
-  try {
-    res.json(await union.getComplaintsWithId(req.query.page, req.params.id, req.params.area));
-  } catch (err) {
-    console.error(`Error while getting complaints `, err.message);
-    next(err);
-  }
-});
+router.get('/complaint/:id/:area?',union.getComplaintsWithId); 
 
 /* GET all strikes for job */
-router.get('/strike/:id/:area?', async function(req, res, next) {
-  try {
-    res.json(await union.getStrikesWithId(req.query.page, req.params.id, req.params.area));
-  } catch (err) {
-    console.error(`Error while getting strikes by id `, err.message);
-    next(err);
-  }
-});
-
-router.get('/strike', async function(req, res, next) {
-  try {
-    res.json(await union.getStrikes(req.query.page));
-  } catch (err) {
-    console.error(`Error while getting union `, err.message);
-    next(err);
-  }
-});
+router.get('/strike/:id/:area?', union.getStrikesWithId);
 
 /* POST create a job */
-router.post('/job', async function(req, res, next) {
-  try {
-      res.json(await union.createJob(req.body));
-  } catch (err) {
-      console.error(`Error while posting job `, err.message);
-      next(err);
-  }
-  });
+router.post('/job', jobDataValidate, union.createJob);
 
   /* POST create a area */
-router.post('/area', async function(req, res, next) {
-  try {
-      res.json(await union.createArea(req.body));
-  } catch (err) {
-      console.error(`Error while posting area `, err.message);
-      next(err);
-  }
-  });
+router.post('/area', areaDataValidate, union.createArea);
 
 /* POST create a complaint */
-router.post('/complaint', async function(req, res, next) {
-  try {
-      res.json(await union.createComplaint(req.body));
-  } catch (err) {
-      console.error(`Error while posting complaint `, err.message);
-      next(err);
-  }
-  });
+router.post('/complaint', complaintDataValidate, union.createComplaint);
+
 /* POST create a demand */
-router.post('/demand', async function(req, res, next) {
-  try {
-      res.json(await union.createDemand(req.body));
-  } catch (err) {
-      console.error(`Error while posting demand `, err.message);
-      next(err);
-  }
-  });
+router.post('/demand', demandDataValidate, union.createDemand);
+
 /* POST create a strike */
-router.post('/strike', async function(req, res, next) {
-  try {
-      res.json(await union.createStrike(req.body));
-  } catch (err) {
-      console.error(`Error while posting strike `, err.message);
-      next(err);
-  }
-  });
+router.post('/strike', strikeDataValidate, union.createStrike);
+
 /* POST vote on a demand */
-router.post('/demand/vote', async function(req, res, next) {
-  try {
-      res.json(await union.createVote(req.body));
-  } catch (err) {
-      console.error(`Error while posting vote `, err.message);
-      next(err);
-  }
-  });
+router.post('/demand/vote', voteDataValidate, union.createVote);
+
 /* POST create a union member */
-router.post('/signup', async function(req, res, next) {
-  try {
-      res.json(await union.createMember(req.body));
-  } catch (err) {
-      console.error(`Error while posting signup `, err.message);
-      next(err);
-  }
-  });
+router.post('/signup', signupDataValidate, union.createMember);
 
   /* POST login */
-router.post('/login', async function(req, res, next) {
-  try {
-      res.json(await union.login(req.body));
-  } catch (err) {
-      console.error(`Error while posting login `, err.message);
-      next(err);
-  }
-  });
+router.post('/login', loginDataValidate, union.login);
 
 /* POST join a strike */
-router.post('/strike/join', async function(req, res, next) {
-    try {
-        res.json(await union.createStrikeJoin(req.body));
-    } catch (err) {
-        console.error(`Error while posting join to strike `, err.message);
-        next(err);
-    }
-    });
+router.post('/strike/join', joinStrikeDataValidate, union.createStrikeJoin);
 
 module.exports = router;

@@ -2,40 +2,13 @@ const db = require('../db/db');
 const helper = require('../db/helper');
 const config = require('../db/config');
 
-function validateCreate(quote) {
-    let messages = [];
-  
-    console.log(quote);
-  
-    if (!quote) {
-      messages.push('No object is provided');
-    }
-  
-    if (!quote.quote) {
-      messages.push('Quote is empty');
-    }
-  
-    if (!quote.author) {
-      messages.push('Quote is empty');
-    }
-  
-    if (quote.quote && quote.quote.length > 255) {
-      messages.push('Quote cannot be longer than 255 characters');
-    }
-  
-    if (quote.author && quote.author.length > 255) {
-      messages.push('Author name cannot be longer than 255 characters');
-    }
-  
-    if (messages.length) {
-      let error = new Error(messages.join());
-      error.statusCode = 400;
-  
-      throw error;
-    }
+function arrayBody(body){
+  var result = [];
+  for(var i in body){
+    result.push(body[i]);
   }
-
-
+  return result;
+}
 async function getAll(page) {
   const offset = helper.getOffset(page, config.listPerPage);
   const rows = await db.query(
@@ -142,27 +115,35 @@ async function getStrikes(page) {
 }
 
 async function createJob(body) {
-  validateCreate(quote);
   
   const result = await db.query(
     createJobSQL,
-    [quote.quote, quote.author]
+    [body.name, body.description]
   );
-  let message = 'Error in creating quote';
+  let message = 'Error in creating job';
 
   if (result.length) {
-    message = 'Quote created successfully';
+    message = 'Job created successfully';
   }
 
+  console.log(result);
+  const result2 = await db.query(
+    createAreaSQL,
+    ["Universal", result[0].id]
+  );
+
+  message = 'Error in creating area';
+  if (result2.length) {
+    message = 'Job created successfully';
+  }
   return {message};
 }
 
 async function createComplaint(body) {
-  validateCreate(quote);
-  
+  let array = arrayBody(body);
   const result = await db.query(
     createComplaintSQL,
-    [quote.quote, quote.author]
+    array
   );
   let message = 'Error in creating complaint';
 
@@ -174,11 +155,11 @@ async function createComplaint(body) {
 }
 
 async function createDemand(body) {
-  validateCreate(quote);
-  
+  let array = arrayBody(body);
+
   const result = await db.query(
     createDemandSQL,
-    [quote.quote, quote.author]
+    array
   );
   let message = 'Error in creating demand';
 
@@ -190,11 +171,12 @@ async function createDemand(body) {
 }
 
 async function createStrike(body) {
-  validateCreate(quote);
-  
+  let array = arrayBody(body);
+
+  array.push([]);
   const result = await db.query(
     createStrikeSQL,
-    [quote.quote, quote.author]
+    array
   );
   let message = 'Error in creating strike';
 
@@ -206,11 +188,11 @@ async function createStrike(body) {
 }
 
 async function createArea(body) {
-  validateCreate(quote);
-  
+  let array = arrayBody(body);
+
   const result = await db.query(
     createAreaSQL,
-    [quote.quote, quote.author]
+    array
   );
   let message = 'Error in creating area';
 
@@ -222,11 +204,11 @@ async function createArea(body) {
 }
 
 async function createVote(body) {
-  validateCreate(quote);
-  
+  let array = arrayBody(body);
+
   const result = await db.query(
     createVoteSQL,
-    [quote.quote, quote.author]
+    array
   );
   let message = 'Error in voting';
 
@@ -238,11 +220,11 @@ async function createVote(body) {
 }
 
 async function createMember(body) {
-  validateCreate(quote);
-  
+  let array = arrayBody(body);
+
   const result = await db.query(
     createMemberSQL,
-    [quote.quote, quote.author]
+    array
   );
   let message = 'Error in creating member';
 
@@ -253,11 +235,11 @@ async function createMember(body) {
   return {message};
 }
 async function login(body) {
-  validateCreate(quote);
-  
+  let array = arrayBody(body);
+
   const result = await db.query(
     loginSQL,
-    [quote.quote, quote.author]
+    array
   );
   let message = 'Error in login';
 
@@ -269,12 +251,11 @@ async function login(body) {
 }
 
 async function createStrikeJoin(body) {
-  validateCreate(body);
+  let array = arrayBody(body);
   
   const result = await db.query(
     createStrikeJoinSQL,
-    [quote.quote, quote.author]
-  );
+    array);
   let message = 'Error in creating strike join';
 
   if (result.length) {
@@ -285,7 +266,7 @@ async function createStrikeJoin(body) {
 }
 
 const getAllSQL = 'SELECT * FROM job OFFSET $1 LIMIT $2';
-const getJobAreaWithIdSQL = 'SELECT * FROM job j LEFT JOIN area a ON a.job_id = j.id and a.area_id = $1 OFFSET $2 LIMIT $3' ;
+const getJobAreaWithIdSQL = 'SELECT * FROM job j INNER JOIN area a ON a.job_id = j.id and a.area_id = $1 OFFSET $2 LIMIT $3' ;
 const getAreasOfJobSQL ='SELECT * from area where job_id = $1 OFFSET $2 LIMIT $3';
 const getVotesSQL = 'SELECT * from demand where job_id = $1 and area_id = $2 OFFSET $3 LIMIT $4';
 const getComplaintsWithIdSQL = 'SELECT * from complaint where job_id = $1 and area_id = $2 OFFSET $3 LIMIT $4';
@@ -295,9 +276,9 @@ const getStrikesSQL = 'SELECT * from strike OFFSET $1 LIMIT $2';
 const createJobSQL = 'INSERT INTO job(name, description) VALUES ($1, $2) RETURNING *';
 const createAreaSQL = 'INSERT INTO area(location, job_id) VALUES ($1, $2) RETURNING *';
 const createComplaintSQL = 'INSERT INTO complaint(dislike, area_id, job_id) VALUES ($1, $2, $3) RETURNING *';
-const createDemandSQL = 'INSERT INTO demand(area_id, title, reason, votes, job_id) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-const createStrikeSQL = 'INSERT INTO strike(title, description, area_id, job_id, attendants_array) VALUES ($1, $2, $3, $4, array[]) RETURNING *';
-const createVoteSQL = 'UPDATE demand SET votes = votes + 1 WHERE VALUES id = $1';
+const createDemandSQL = 'INSERT INTO demand(area_id, title, reason, votes, job_id) VALUES ($1, $2, $3, 1, $4) RETURNING *';
+const createStrikeSQL = 'INSERT INTO strike(title, description, area_id, job_id, attendants_array) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+const createVoteSQL = 'UPDATE demand SET votes = votes + 1 WHERE id = $1 RETURNING *';
 const createMemberSQL = 'INSERT INTO union_member(status, name, area_id, job_id) VALUES ($1, $2, $3, $4) RETURNING *'
 const loginSQL = 'INSERT INTO quote(quote, author) VALUES ($1, $2) RETURNING *';
 const createStrikeJoinSQL = 'UPDATE strike SET attendants_array = array_append(attendants_array, $1)';
