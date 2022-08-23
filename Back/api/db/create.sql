@@ -51,3 +51,5 @@ CREATE TABLE demand (
     votes integer NOT NULL,
     job_id INTEGER REFERENCES job(id)
 );
+
+INSERT INTO "roles" ("id","name","createdAt","updatedAt") VALUES ($1,$2,$3,$4) RETURNING "id","name","createdAt","updatedAt";

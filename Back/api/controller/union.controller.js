@@ -16,7 +16,7 @@ const {
 } = require("../validation/union.validation");
 
 /* GET all jobs */
-router.get('/', [authJwt.verifyToken], union.getAll);
+router.get('/', union.getAll);
 
 router.get('/strikes', [authJwt.verifyToken], union.getStrikes);
 
@@ -36,10 +36,10 @@ router.get('/complaint/:id/:area?', [authJwt.verifyToken], union.getComplaintsWi
 router.get('/strike/:id/:area?', [authJwt.verifyToken], union.getStrikesWithId);
 
 /* POST create a job */
-router.post('/job', [authJwt.verifyToken, jobDataValidate], union.createJob);
+router.post('/job', [authJwt.verifyToken, authJwt.isModeratorOrAdmin, jobDataValidate], union.createJob);
 
   /* POST create a area */
-router.post('/area',  [authJwt.verifyToken, areaDataValidate], union.createArea);
+router.post('/area',  [authJwt.verifyToken, authJwt.isModeratorOrAdmin, areaDataValidate], union.createArea);
 
 /* POST create a complaint */
 router.post('/complaint',  [authJwt.verifyToken, complaintDataValidate], union.createComplaint);
@@ -48,7 +48,7 @@ router.post('/complaint',  [authJwt.verifyToken, complaintDataValidate], union.c
 router.post('/demand',  [authJwt.verifyToken, demandDataValidate], union.createDemand);
 
 /* POST create a strike */
-router.post('/strike', [authJwt.verifyToken, strikeDataValidate], union.createStrike);
+router.post('/strike', [authJwt.verifyToken, authJwt.isModeratorOrAdmin, strikeDataValidate], union.createStrike);
 
 /* POST vote on a demand */
 router.post('/demand/vote', [authJwt.verifyToken, voteDataValidate], union.createVote);
