@@ -4,6 +4,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require("cors");
+
+var corsOptions = {
+    origin: "http://localhost:8081"
+  };
+
 
 var indexRouter = require('./controller/index.controller');
 var unionRouter = require('./controller/union.controller');
@@ -16,6 +22,8 @@ db.sequelize.sync();
 //     console.log('Drop and Resync Db');
 //     initial();
 //   });
+app.use(cors(corsOptions));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
