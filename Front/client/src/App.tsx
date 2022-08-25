@@ -56,21 +56,6 @@ const App: React.FC = () => {
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
-            <Link to={"/home"} className="nav-link">
-              Home
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to={"/demands"} className="nav-link">
-              Demands
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to={"/complaints"} className="nav-link">
-              Complaints
-            </Link>
-          </li>
-          <li className="nav-item">
             <Link to={"/companies"} className="nav-link">
               Companies
             </Link>

@@ -37,3 +37,7 @@ Front (React I want live updates)
 - Delete user and undo all actions they've done
 - Be able to take down and bring it up at certain times
 - Copy data online and offline
+
+
+- Refactor prop values
+- Refresh token

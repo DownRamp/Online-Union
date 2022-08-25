@@ -6,7 +6,7 @@ const Complaints: React.FC = () => {
   const [content, setContent] = useState([]);
 
   useEffect(() => {
-    UnionService.getVotes(1,1).then(
+    UnionService.getComplaints(1).then(
 
       (response) => {
         setContent(response.data.data);

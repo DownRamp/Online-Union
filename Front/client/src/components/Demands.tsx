@@ -23,7 +23,6 @@ const Demands: React.FC = () => {
   }, []);
 
   function VoteList(){
-    console.log(content);
     const sidebar = (
       <ul>
         {content?.map((post:any) =>(
@@ -35,8 +34,10 @@ const Demands: React.FC = () => {
     );
     const current = content?.map((content:any) =>
       <div key={content.id}>
-        <h3>{content.name}</h3>
-        <p>{content.description}</p>
+        <h2>{content.area_id}</h2>
+        <h3>{content.title}</h3>
+        <p>{content.reason}</p>
+        <p>Number of votes: {content.votes}</p>
       </div>
     );
     return (

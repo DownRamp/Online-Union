@@ -1,41 +1,32 @@
 import React, { useState, useEffect } from "react";
 
-import UnionService from "../services/user.service";
+// import UnionService from "../services/user.service";
 
 const Companies: React.FC = () => {
-  const [content, setContent] = useState([]);
+  const [content, setContent] = useState<any[]>([]);
 
   useEffect(() => {
-    UnionService.getVotes(1,1).then(
-
-      (response) => {
-        setContent(response.data.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-
-        setContent(_content);
-      }
-    );
+    const companies:any[] = [
+      { id: 1, title: "Make1",  description: 2016 },
+      { id: 2, title: "Make2",  description: 2016},
+      { id: 3, title: "Make3",  description: 2016 },
+    ];
+    setContent(companies);
   }, []);
 
-  function VoteList(){
-    console.log(content);
+  function CompanyList(){
     const sidebar = (
       <ul>
         {content?.map((post:any) =>(
           <li key={post.id}>
-            {post.name}
+            {post.title}
           </li>
         ))}
       </ul>
     );
     const current = content?.map((content:any) =>
       <div key={content.id}>
-        <h3>{content.name}</h3>
+        <h3>{content.title}</h3>
         <p>{content.description}</p>
       </div>
     );
@@ -53,7 +44,7 @@ const Companies: React.FC = () => {
       <header className="jumbotron">
         <h3>Company List</h3>
       </header>
-      <VoteList/>
+      <CompanyList/>
     </div>
   );
 };

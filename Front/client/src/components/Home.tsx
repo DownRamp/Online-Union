@@ -22,7 +22,10 @@ const Home: React.FC = () => {
     );
   }, []);
 
+
+
   function JobList(){
+
     console.log(content);
     const sidebar = (
       <ul>
@@ -44,6 +47,7 @@ const Home: React.FC = () => {
         {sidebar}
         <hr />
         {current}
+
       </div>
     );
   }

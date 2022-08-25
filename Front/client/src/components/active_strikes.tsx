@@ -7,8 +7,8 @@ const Strike: React.FC = () => {
 
   useEffect(() => {
     UnionService.getStrike().then(
-
       (response) => {
+        console.log(response);
         setContent(response.data.data);
       },
       (error) => {
@@ -22,7 +22,7 @@ const Strike: React.FC = () => {
     );
   }, []);
 
-  function JobList(){
+  function StrikeList(){
     console.log(content);
     const sidebar = (
       <ul>
@@ -35,8 +35,12 @@ const Strike: React.FC = () => {
     );
     const current = content?.map((content:any) =>
       <div key={content.id}>
-        <h3>{content.name}</h3>
+        <h3>{content.title}</h3>
         <p>{content.description}</p>
+        <ul>
+            <li>Area id:{content.area_id}</li>
+            <li>Job id: {content.job_id}</li>
+        </ul>
       </div>
     );
     return (
@@ -53,7 +57,7 @@ const Strike: React.FC = () => {
       <header className="jumbotron">
         <h3>Strikes</h3>
       </header>
-      <JobList/>
+      <StrikeList/>
     </div>
   );
 };
