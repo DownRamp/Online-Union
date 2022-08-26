@@ -87,6 +87,11 @@ const BoardUser:  React.FC<Props> = ({ history }) => {
     );
   }
 
+  function handleClickArea(value:Number, area_id:Number, job_id:Number){
+    // Send to demands with info
+    // Send to complaints with info
+  }
+
   // send to different locations (Demands, complaints, Strikes)
   function addJob(){
     setForm(true);
@@ -156,25 +161,36 @@ const handlePostJob = (formValue: { name: string; description: string }) => {
     );
     // button click opens areas for job
     // if area is longer then 0 then show 
-    var areas = area?.map((content:Area) =>{
-      <div className = "row" key={content.area_id}>
+    var areas = area.map((content:Area) =>
+      <div className = "row" key={content.area_id} style={{paddingLeft:20}}>
       <h3>{content.location}</h3>
       <Button 
       border="line"
       color="#990000"
       height = "100px"
-      onClick={()=>handleClick(content.area_id)}
+      onClick={()=>handleClickArea(1,content.area_id, content.job_id)}
       radius = "5%"
       width = "100px"
-      children = "Add Area"
+      children = "Check Demands"
+    />
+    <Button 
+      border="line"
+      color="#990000"
+      height = "100px"
+      onClick={()=>handleClickArea(2,content.area_id, content.job_id)}
+      radius = "5%"
+      width = "100px"
+      children = "Check Complaints"
     />
     </div>
-    });
+    );
 
     var current;
-    if(area.length >0){
+    if(area.length > 0){
+      // console.log(area);
       current = content?.map((content:any) =>{
-      if(content.id == area[0].job_id){
+      if(content.id === area[0].job_id){
+        return(
         <div className = "row" key={content.id}>
         <h3>{content.name}</h3>
         <p>{content.description}</p>
@@ -188,9 +204,10 @@ const handlePostJob = (formValue: { name: string; description: string }) => {
         children = "Add Area"
       />
       {areas}
-      </div>
+      </div>);
       }
       else{
+        return(
       <div key={content.id}>
         <h3>{content.name}</h3>
         <p>{content.description}</p>
@@ -203,9 +220,10 @@ const handlePostJob = (formValue: { name: string; description: string }) => {
         width = "100px"
         children = "Select"
       />
-      </div>}
+      </div>);}
       }
     );
+    console.log(current);
     }
     
     else{
